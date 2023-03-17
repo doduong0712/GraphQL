@@ -1,0 +1,24 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Post, PostSchema } from './entities/post.entity';
+import { User, UserSchema } from './entities/user.entity';
+import { PostsResolver } from './posts.resolver';
+import { PostsService } from './posts.service';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },{
+        name: Post.name,
+        schema: PostSchema
+      }
+    ]),
+  ],
+  providers: [PostsResolver, PostsService],
+  exports: [PostsService]
+})
+
+export class PostsModule {}
