@@ -1,16 +1,19 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Directive, ID } from '@nestjs/graphql';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Post } from './post.entity';
+// import { Post } from '../../posts/entities/post.entity';
 
 export type UserDocument = HydratedDocument<User>;
 
 
 @Schema()
-@ObjectType()
+@ObjectType('User')
+@Directive('@extends')
+@Directive('@key(fields: "id")')
 export class User {
 
-  @Field(() => String)
+  @Field(() => ID)
+  @Directive('@external')
   _id: MongooseSchema.Types.ObjectId;
 
   @Prop()
@@ -21,9 +24,9 @@ export class User {
   @Field(() => String)
   password: string;
 
-  @Prop()
-  @Field((type) => [Post])
-  posts: Post[];
+  // @Prop()
+  // @Field(() => [Post])
+  // posts?: Post[];
 
 }
 

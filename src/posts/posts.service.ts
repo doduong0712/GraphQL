@@ -38,6 +38,14 @@ export class PostsService {
         return existingPost;
     }
 
+    async getPostsByUserId(userId: string): Promise<Post[]> {
+        const postsOfUser = this.postModel.find({ creator: userId }).exec();
+        if (!postsOfUser) {
+            throw new NotFoundException(`Post of #${userId} not found`);
+        }
+        return postsOfUser;
+      }
+
     async deletePost(postId: string): Promise<Post> {
         const deletedPost = await this.postModel.findByIdAndDelete(postId);
         if (!deletedPost) {
